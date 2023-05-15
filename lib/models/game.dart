@@ -2,61 +2,6 @@ import 'package:flutter_solitaire/models/card.dart';
 import 'package:flutter_solitaire/models/pile.dart';
 
 class Game {
-/*
-[game set]
-1. shuffle cards
-2. set tableau and stock
-3. set timer
-
-[every each move]
-1. figuring tops
-2. get possible moves 
-3. store excuted moves
-4. count moves, count points 
-
-5. if there is no play while n seconds, give a hint for possible moves
-6. if there is no face down piles on each tableau, active autoComplete button 
-7. if there is no cards on tableu and stock, its done
-
-*/
-
-/*
-[shuffle cards]
-1. make cardSet by 1-13 of shapes D(diamond),S(space),H(heart),C(clover)
-2. shuffle cards
-
-[set cards]
-- 4 blank foundations
-- 7 tableau by 1- 7 cards
-- stock with rest 24cards
-
-[get tops]
-
-[get nextTo of tops]
-
-[get possible moves]
-
-
-*/
-
-/*
-foundations,
-tableaus,
-stock
-
-nextTo
-
-moveCard 
-
-iscompleted
-undo
-
-timer
-moveCount
-points
-
-*/
-
   List<Tableau> tableaus = [];
   List<List<String>> nextCardsOfTableuas = [];
   List<List<String>> faceUpCardsOfTableaus = [];
@@ -139,14 +84,6 @@ points
 
   void setPossibleMoves() {
     Map<String, List<dynamic>> newPossibleMoves = {};
-    /*
-    //TODO: [advanced] move priority
-    1. bottom faceUp of tableau to tableau
-    2. stock to foundation
-    3. tableau to foundation
-    4. rest faceUp of tableau to tableau
-    5. stock to tableau
-    */
 
 //--------------------from tableau to tableau & foundation
     for (int from = 0; from > 7; from++) {
@@ -254,15 +191,83 @@ points
         break;
     }
     setPossibleMoves();
-    moveHistory.add(possibleMove);
+    moveHistory.add([card.getCard(), ...possibleMove]);
+
     if (possibleMoves.isEmpty) {
       //check completed or noMoreMoves
+
+      List<Foundation> foundationList = foundations.values.toList();
+      for (int i = 0; i < foundationList.length; i++) {
+        if (!foundationList[i].isDone) {
+          isNomoreMove = true;
+          break;
+        }
+
+        if (i == foundationList.length - 1 && foundationList[i].isDone) {
+          isCompleted = true;
+        }
+      }
     }
   }
 
-  void moveCards(List<GCard> cards) {}
+  void moveCards(List<GCard> cards) {
+/*
+-tableau -> tableau
+setT, setP
+*/
+    String lastCard = cards[cards.length - 1].getCard()!;
+    List<dynamic>? possibleMove = possibleMoves[lastCard];
+    if (possibleMove != null) {
+      var to = possibleMove[1];
+      var from = possibleMove[0];
+      tableaus[to].buildCards(cards);
+      moveHistory.add([lastCard, ...possibleMove]);
+      setTableausStatus();
+      setPossibleMoves();
+    }
+  }
 
-  void undo() {}
+  void undo() {
+/*
+[card,from,to]
+to draw -> from buildCard
+*/
+    if (moveHistory.isNotEmpty) {
+      List<dynamic> history = moveHistory.removeLast();
+      String card = history[0];
+      var from = history[1];
+      var to = history[2];
+
+      switch (to.runtimeType) {
+        case int:
+          {
+            List<GCard> cards = tableaus[to].drawCards(card);
+            if (from.runtimeType == int) {
+              //t->t
+
+              tableaus[from].buildCards(cards);
+              setTableausStatus();
+            } else if (from.runtimeType == String) {
+              stock.buildCard(cards[0]);
+              setTableausStatus();
+            } else {
+              foundations[from]!.buildCard();
+              setFoundationsStatus();
+            }
+          }
+
+          break;
+        case String:
+          {}
+          break;
+        case Shapes:
+          {}
+          break;
+      }
+
+      setPossibleMoves();
+    }
+  }
 
   void restart() {}
 }

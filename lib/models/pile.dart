@@ -69,6 +69,7 @@ class Foundation {
 }
 
 class Tableau extends Pile {
+  bool noMoreFaceDown = false;
   Tableau(super.cards) {
     cards[0].toggleFace();
   }
@@ -101,6 +102,11 @@ class Tableau extends Pile {
 
   void buildCards(List<GCard> newCards) {
     cards = [...newCards, ...cards];
+
+    int faceDownCardsCount = cards.where((card) => !card.isFaceUp).length;
+    if (faceDownCardsCount == 0) {
+      noMoreFaceDown = true;
+    }
   }
 
   List<GCard> drawCards(String cardInfo) {
@@ -111,8 +117,13 @@ class Tableau extends Pile {
     if (getFaceUpCards().isEmpty && cards.isNotEmpty) {
       cards[0].toggleFace();
     }
+    List<GCard> drawCards = cards.getRange(0, indexOfFromCard + 1).toList();
 
-    return cards.getRange(0, indexOfFromCard + 1).toList();
+    cards = cards.getRange(indexOfFromCard + 1, cards.length).toList();
+    if (cards.isEmpty) {
+      noMoreFaceDown = false;
+    }
+    return drawCards;
   }
 }
 
@@ -132,6 +143,7 @@ class Stock extends Pile {
   }
 
   void turnOver() {
+    //TODO:  store moveHistory
     int indexOfFirtStock = cards.indexWhere((card) => !card.isFaceUp);
     if (indexOfFirtStock > 0) {
       cards[indexOfFirtStock].toggleFace();
@@ -149,5 +161,9 @@ class Stock extends Pile {
     cards =
         cards.where((card) => card.getCard() != topWaste.getCard()).toList();
     return topWaste;
+  }
+
+  void buildCard(GCard card) {
+    cards = [...cards, card];
   }
 }
