@@ -227,6 +227,12 @@ setT, setP
     }
   }
 
+  void turnOverStock() {
+    stock.turnOver(true);
+
+    moveHistory.add(['', 's', 's']);
+  }
+
   void undo() {
 /*
 [card,from,to]
@@ -258,10 +264,23 @@ to draw -> from buildCard
 
           break;
         case String:
-          {}
+          {
+            stock.turnOver(false);
+          }
           break;
         case Shapes:
-          {}
+          GCard drawCard = foundations[to]!.drawCard()!;
+          {
+            if (from.runtimeType == String) {
+              //s->f
+              stock.buildCard(drawCard);
+            } else {
+              //t->f
+              tableaus[from].buildCards([drawCard]);
+              setTableausStatus();
+            }
+            setFoundationsStatus();
+          }
           break;
       }
 
@@ -269,5 +288,17 @@ to draw -> from buildCard
     }
   }
 
-  void restart() {}
+  void restart() {
+    for (var tableau in tableaus) {
+      tableau.reset();
+    }
+    for (var foundation in foundations.values) {
+      foundation.reset();
+    }
+    stock.reset();
+    setFoundationsStatus();
+    setTableausStatus();
+    setPossibleMoves();
+    moveHistory = [];
+  }
 }

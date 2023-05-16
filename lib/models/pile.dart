@@ -58,20 +58,30 @@ class Foundation {
     }
   }
 
-  void drawCard() {
+  GCard? drawCard() {
     if (next > 2) {
       if (next == 13) {
         isDone = false;
+        return GCard(shape: shape, value: 13);
       }
       next -= 1;
+      return GCard(shape: shape, value: next);
     }
+    return null;
+  }
+
+  void reset() {
+    next = 1;
+    isDone = false;
   }
 }
 
 class Tableau extends Pile {
   bool noMoreFaceDown = false;
+  late List<GCard> defaultCards;
   Tableau(super.cards) {
     cards[0].toggleFace();
+    defaultCards = cards;
   }
 
   List<GCard> getFaceUpCards() {
@@ -125,10 +135,17 @@ class Tableau extends Pile {
     }
     return drawCards;
   }
+
+  void reset() {
+    cards = defaultCards;
+  }
 }
 
 class Stock extends Pile {
-  Stock(List<GCard> cards) : super(cards);
+  late List<GCard> defaultCards;
+  Stock(super.cards) {
+    defaultCards = cards;
+  }
 
   String? getTop() {
     List<GCard> wastes = cards.where((card) => card.isFaceUp).toList();
@@ -142,9 +159,10 @@ class Stock extends Pile {
     return cards.where((card) => !card.isFaceUp).length;
   }
 
-  void turnOver() {
+  void turnOver(bool backward) {
     //TODO:  store moveHistory
-    int indexOfFirtStock = cards.indexWhere((card) => !card.isFaceUp);
+    int indexOfFirtStock =
+        cards.indexWhere((card) => card.isFaceUp == !backward);
     if (indexOfFirtStock > 0) {
       cards[indexOfFirtStock].toggleFace();
     } else {
@@ -165,5 +183,9 @@ class Stock extends Pile {
 
   void buildCard(GCard card) {
     cards = [...cards, card];
+  }
+
+  void reset() {
+    cards = defaultCards;
   }
 }
