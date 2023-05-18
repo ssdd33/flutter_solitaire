@@ -11,13 +11,20 @@ class TableauSection extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: const [
                 Blank(),
+                SizedBox(width: 5),
                 Blank(),
+                SizedBox(width: 5),
                 Blank(),
+                SizedBox(width: 5),
                 Blank(),
+                SizedBox(width: 5),
                 Blank(),
+                SizedBox(width: 5),
                 Blank(),
+                SizedBox(width: 5),
                 Blank(),
               ],
             )));

@@ -8,6 +8,7 @@ class GameSection extends StatelessWidget {
     return Container(
       height: 50,
       color: Colors.red[400],
+      child: Row(children: const []),
     );
   }
 }

@@ -14,6 +14,7 @@ class StockSection extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
                 Blank(),
+                SizedBox(width: 10),
                 Blank(),
               ],
             )));

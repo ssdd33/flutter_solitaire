@@ -14,8 +14,11 @@ class FoundationSection extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
                 Blank(),
+                SizedBox(width: 10),
                 Blank(),
+                SizedBox(width: 10),
                 Blank(),
+                SizedBox(width: 10),
                 Blank(),
               ],
             )));

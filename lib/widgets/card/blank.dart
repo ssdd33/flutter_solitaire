@@ -5,18 +5,20 @@ class Blank extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.green.shade900,
-        border: Border.all(
-          width: 1,
-          color: Colors.grey.shade300,
-        ),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(10),
+    return Expanded(
+      child: Container(
+        height: 90,
+        decoration: BoxDecoration(
+          color: Colors.green.shade900,
+          border: Border.all(
+            width: 1,
+            color: Colors.grey.shade500,
+          ),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(5),
+          ),
         ),
       ),
-      child: Text('blank'),
     );
   }
 }
