@@ -7,10 +7,24 @@ class CardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-        color: Colors.amber[50],
-        child: Center(
-          child: Text('${card.getCard()}'),
-        ));
+    return Expanded(
+      child: Container(
+        height: 85,
+        decoration: BoxDecoration(
+          color: Colors.amber.shade50,
+          border: Border.all(
+            width: 1,
+            color: Colors.black54,
+          ),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(5),
+          ),
+        ),
+        child: const Align(
+          alignment: Alignment.center,
+          child: Text('D 10'),
+        ),
+      ),
+    );
   }
 }

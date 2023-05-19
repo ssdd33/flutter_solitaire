@@ -7,7 +7,7 @@ class Blank extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        height: 90,
+        height: 85,
         decoration: BoxDecoration(
           color: Colors.green.shade900,
           border: Border.all(
