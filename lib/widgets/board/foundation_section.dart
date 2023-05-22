@@ -7,7 +7,7 @@ class FoundationSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-        flex: 4,
+        flex: 3,
         child: Padding(
             padding: const EdgeInsets.all(10),
             child: Row(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_solitaire/widgets/card/blank.dart';
+import 'package:flutter_solitaire/widgets/card/horizontalPile.dart';
 
 class StockSection extends StatelessWidget {
   const StockSection({super.key});
@@ -13,9 +13,9 @@ class StockSection extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
-                Blank(),
-                SizedBox(width: 10),
-                Blank(),
+                HorizontalPile(),
+                SizedBox(width: 5),
+                Expanded(flex: 3, child: Text('blank')),
               ],
             )));
   }
